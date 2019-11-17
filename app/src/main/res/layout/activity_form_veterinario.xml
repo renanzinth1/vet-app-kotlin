@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/campo_veterinario_nome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome" />
+
+    <EditText
+        android:id="@+id/campo_veterinario_sobrenome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Sobrenome" />
+
+    <EditText
+        android:id="@+id/campo_veterinario_cfmv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="CFMV" />
+
+    <EditText
+        android:id="@+id/campo_veterinario_telefone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Telefone" />
+
+
+    <EditText
+        android:id="@+id/campo_veterinario_dataNascimento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Data de Nascimento" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sexo"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioGroup
+            android:id="@+id/radioGroup_sexos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/campo_veterinario_masculino"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:hint="Masculino" />
+
+            <RadioButton
+                android:id="@+id/campo_veterinario_feminino"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:hint="Feminino" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_formulario_remover"
+        android:title="Remover"
+        android:icon="@drawable/ic_remove"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/menu_formulario_editar"
+        android:title="Editar"
+        android:icon="@drawable/ic_editar"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/menu_formulario_salvar"
+        android:title="Salvar"
+        android:icon="@drawable/ic_confirmar"
+        app:showAsAction="always"
+        />
+</menu>

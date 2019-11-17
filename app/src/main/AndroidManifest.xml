@@ -1,0 +1,120 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="br.com.renanjardel.vet_app_kotlin">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application android:allowBackup="true"
+                 android:label="@string/app_name"
+                 android:icon="@mipmap/ic_launcher"
+                 android:roundIcon="@mipmap/ic_launcher_round"
+                 android:supportsRtl="true"
+                 android:theme="@style/AppTheme">
+
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".activity.ClientesActivity"
+                android:label="Lista de Clientes"
+                android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.MainActivity" />
+        </activity>
+        <activity
+                android:name=".activity.form.FormClienteActivity"
+                android:label="Cadastro de Cliente"
+                android:parentActivityName=".activity.ClientesActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.ClientesActivity" />
+        </activity>
+        <activity
+                android:name=".activity.VeterinariosActivity"
+                android:label="Lista de Veterinários"
+                android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.MainActivity" />
+        </activity>
+        <activity
+                android:name=".activity.form.FormVeterinarioActivity"
+                android:label="Cadastro de Veterinário"
+                android:parentActivityName=".activity.VeterinariosActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.VeterinariosActivity" />
+        </activity>
+        <activity
+                android:name=".activity.MedicamentosActivity"
+                android:label="Lista de Medicamentos"
+                android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.MainActivity" />
+        </activity>
+        <activity
+                android:name=".activity.form.FormMedicamentoActivity"
+                android:label="Cadastro de Medicamento"
+                android:parentActivityName=".activity.MedicamentosActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.MedicamentosActivity" />
+        </activity>
+        <activity
+                android:name=".activity.EspeciesActivity"
+                android:label="Lista de Espécies"
+                android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.MainActivity" />
+        </activity>
+        <activity
+                android:name=".activity.form.FormEspecieActivity"
+                android:label="Cadastro de Espécie"
+                android:parentActivityName=".activity.EspeciesActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.EspeciesActivity" />
+        </activity>
+        <activity
+                android:name=".activity.SubEspeciesActivity"
+                android:label="Lista de Subespécies"
+                android:parentActivityName=".activity.EspeciesActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.EspeciesActivity" />
+        </activity>
+        <activity
+                android:name=".activity.form.FormSubEspecieActivity"
+                android:label="Cadastro de SubEspécie"
+                android:parentActivityName=".activity.EspeciesActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.EspeciesActivity" />
+        </activity>
+        <activity
+                android:name=".activity.AnimaisActivity"
+                android:label="Lista de Animais"
+                android:parentActivityName=".activity.ClientesActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.ClientesActivity" />
+        </activity>
+
+        <activity
+                android:name=".activity.form.FormAnimalActivity"
+                android:label="Cadastro de Animal"
+                android:parentActivityName=".activity.ClientesActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activity.ClientesActivity" />
+        </activity>
+
+    </application>
+
+</manifest>
