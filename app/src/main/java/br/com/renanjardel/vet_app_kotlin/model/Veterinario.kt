@@ -2,13 +2,9 @@ package br.com.renanjardel.vet_app_kotlin.model
 
 import java.io.Serializable
 
-class Veterinario : Pessoa, Serializable {
+data class Veterinario(var cfmv: String = "") : Serializable, Pessoa() {
 
-    var cfmv: String? = null
-
-    constructor() : super() {}
-
-    constructor(cfmv: String) : super() {
-        this.cfmv = cfmv
+    override fun toString(): String {
+        return super.nome
     }
 }

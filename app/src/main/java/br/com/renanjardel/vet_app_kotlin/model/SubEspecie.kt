@@ -2,20 +2,12 @@ package br.com.renanjardel.vet_app_kotlin.model
 
 import java.io.Serializable
 
-class SubEspecie : Serializable {
+data class SubEspecie (var codigo: Long? = null,
+                  var nome: String = "",
+                  var especie: Especie = Especie()) : Serializable {
 
-    var codigo: Long? = null
-
-    var nome: String? = null
-
-    var especie: Especie? = null
-
-    constructor() : super() {}
-
-    constructor(codigo: Long?, nome: String, especie: Especie) : super() {
-        this.codigo = codigo
-        this.nome = nome
-        this.especie = especie
+    override fun toString(): String {
+        return this.nome
     }
 
 }

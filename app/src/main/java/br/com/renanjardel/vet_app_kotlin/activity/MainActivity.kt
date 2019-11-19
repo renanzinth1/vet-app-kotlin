@@ -3,8 +3,8 @@ package br.com.renanjardel.vet_app_kotlin.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.ImageButton
 import br.com.renanjardel.vet_app_kotlin.R
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,27 +12,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val botaoCliente = findViewById<ImageButton>(R.id.botao_listar_cliente)
-        val botaoVeterinario = findViewById<ImageButton>(R.id.botao_listar_veterinario)
-        val botaoMedicamento = findViewById<ImageButton>(R.id.botao_listar_medicamento)
-        val botaoEspecie = findViewById<ImageButton>(R.id.botao_listar_especie)
-
-        botaoCliente.setOnClickListener {
+        botao_listar_cliente.setOnClickListener {
             val clienteIntent = Intent(this@MainActivity, ClientesActivity::class.java)
             startActivity(clienteIntent)
         }
 
-        botaoVeterinario.setOnClickListener {
+        botao_listar_veterinario.setOnClickListener {
             val veterinarioIntent = Intent(this@MainActivity, VeterinariosActivity::class.java)
             startActivity(veterinarioIntent)
         }
 
-        botaoMedicamento.setOnClickListener {
+        botao_listar_medicamento.setOnClickListener {
             val medicamentoIntent = Intent(this@MainActivity, MedicamentosActivity::class.java)
             startActivity(medicamentoIntent)
         }
 
-        botaoEspecie.setOnClickListener {
+        botao_listar_especie.setOnClickListener {
             val especieIntent = Intent(this@MainActivity, EspeciesActivity::class.java)
             startActivity(especieIntent)
         }

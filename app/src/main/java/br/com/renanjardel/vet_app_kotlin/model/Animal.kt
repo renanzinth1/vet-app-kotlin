@@ -1,31 +1,16 @@
 package br.com.renanjardel.vet_app_kotlin.model
 
 import java.io.Serializable
-import java.time.LocalDate
 
-class Animal : Serializable {
+data class Animal (var codigo: Long? = null,
+                   var nome: String = "",
+                   var dataNascimento: String = "",
+                   var sexo: SexoAnimal = SexoAnimal.MACHO,
+                   var subEspecie: SubEspecie = SubEspecie(),
+                   var cliente: Cliente = Cliente()) : Serializable {
 
-    var codigo: Long? = null
-
-    var nome: String? = null
-
-    var dataNascimento: String? = null
-
-    var sexo: SexoAnimal? = null
-
-    var subEspecie: SubEspecie? = null
-
-    var cliente: Cliente? = null
-
-    constructor() : super() {}
-
-    constructor(codigo: Long?, nome: String, dataNascimento: String, sexo: SexoAnimal, subEspecie: SubEspecie, cliente: Cliente) {
-        this.codigo = codigo
-        this.nome = nome
-        this.dataNascimento = dataNascimento
-        this.sexo = sexo
-        this.subEspecie = subEspecie
-        this.cliente = cliente
+    override fun toString(): String {
+        return this.nome
     }
 
 }
