@@ -8,21 +8,18 @@ import android.util.Log
 import android.view.ContextMenu
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Button
-import android.widget.ListView
 import android.widget.Toast
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormClienteActivity
 import br.com.renanjardel.vet_app_kotlin.adapter.ClientesAdapter
 import br.com.renanjardel.vet_app_kotlin.model.Cliente
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_clientes.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ClientesActivity : AppCompatActivity() {
-
-    private var clientesView: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,28 +27,24 @@ class ClientesActivity : AppCompatActivity() {
 
         carregaLista()
 
-        val botaoNovoCliente = findViewById<Button>(R.id.novo_cliente)
-
-        botaoNovoCliente.setOnClickListener {
+        novo_cliente.setOnClickListener {
             val goCadastrarCliente = Intent(this@ClientesActivity, FormClienteActivity::class.java)
             startActivity(goCadastrarCliente)
         }
 
-        clientesView = findViewById(R.id.lista_clientes)
-
-        clientesView!!.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, id ->
+        lista_clientes.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, id ->
             val cliente = lista.getItemAtPosition(position) as Cliente
             val formCliente = Intent(this@ClientesActivity, FormClienteActivity::class.java)
             formCliente.putExtra("cliente", cliente)
             startActivity(formCliente)
         }
 
-        registerForContextMenu(clientesView)
+        registerForContextMenu(lista_clientes)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val cliente = clientesView!!.getItemAtPosition(info.position) as Cliente
+        val cliente = lista_clientes.getItemAtPosition(info.position) as Cliente
 
         val remover = menu.add("Remover")
         remover.setOnMenuItemClickListener {
@@ -110,7 +103,7 @@ class ClientesActivity : AppCompatActivity() {
 
                 val adapter = ClientesAdapter(this@ClientesActivity, clientes!!)
                 //ArrayAdapter<Cliente> adapter = new ArrayAdapter<Cliente> (ClientesActivity.this, android.R.layout.simple_list_item_1, clientes);
-                clientesView!!.adapter = adapter
+                lista_clientes.adapter = adapter
             }
 
             override fun onFailure(call: Call<List<Cliente>>, t: Throwable) {

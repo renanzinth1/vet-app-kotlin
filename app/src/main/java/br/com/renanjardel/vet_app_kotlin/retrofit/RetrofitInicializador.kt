@@ -21,7 +21,7 @@ class RetrofitInicializador {
     val animalService: AnimalService get() = retrofit.create(AnimalService::class.java)
 
     init {
-        retrofit = Retrofit.Builder().baseUrl("http:/192.168.15.7:8080")
+        retrofit = Retrofit.Builder().baseUrl("http:/192.168.31.180:8080")
                 .addConverterFactory(JacksonConverterFactory.create()).build()
     }
 }

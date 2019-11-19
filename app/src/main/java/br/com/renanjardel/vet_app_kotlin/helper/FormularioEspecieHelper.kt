@@ -1,28 +1,19 @@
 package br.com.renanjardel.vet_app_kotlin.helper
 
-import android.widget.EditText
-import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormEspecieActivity
 import br.com.renanjardel.vet_app_kotlin.model.Especie
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_form_especie.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FormularioEspecieHelper(activity: FormEspecieActivity) {
+class FormularioEspecieHelper(private val activity: FormEspecieActivity) {
 
-    private val campoNome: EditText
-    private var especie: Especie? = null
-
-
-    init {
-        campoNome = activity.findViewById(R.id.campo_especie_nome)
-        especie = Especie()
-    }
+    private var especie = Especie()
 
     fun pegaEspecie(): Especie? {
-        especie!!.nome = campoNome.text.toString()
-
+        especie.nome = activity.campo_especie_nome.text.toString()
         return especie
     }
 
@@ -36,12 +27,11 @@ class FormularioEspecieHelper(activity: FormEspecieActivity) {
 
                 val especie = response.body()
 
-                campoNome.setText(especie!!.nome)
+                activity.campo_especie_nome.setText(especie!!.nome)
 
                 this@FormularioEspecieHelper.especie = especie
 
                 campoTrue(false)
-
             }
 
             override fun onFailure(call: Call<Especie>, t: Throwable) {
@@ -51,6 +41,6 @@ class FormularioEspecieHelper(activity: FormEspecieActivity) {
     }
 
     fun campoTrue(value: Boolean) {
-        campoNome.isEnabled = value
+        activity.campo_especie_nome.isEnabled = value
     }
 }

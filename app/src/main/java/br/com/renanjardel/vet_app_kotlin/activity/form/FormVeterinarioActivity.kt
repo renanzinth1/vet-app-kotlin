@@ -17,20 +17,20 @@ import retrofit2.Response
 
 class FormVeterinarioActivity : AppCompatActivity() {
 
-    private var helper: FormularioVeterinarioHelper? = null
+    private val helper: FormularioVeterinarioHelper by lazy{
+        FormularioVeterinarioHelper(this)
+    }
     private var veterinario: Veterinario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_veterinario)
 
-        helper = FormularioVeterinarioHelper(this)
-
         val intent = intent
-        veterinario = intent.getSerializableExtra("veterinario") as Veterinario
+        veterinario = intent.getSerializableExtra("veterinario") as? Veterinario
 
         if (veterinario != null)
-            helper!!.preencheFormulario(veterinario)
+            helper.preencheFormulario(veterinario)
     }
 
     //    @Override
@@ -56,11 +56,11 @@ class FormVeterinarioActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_formulario_remover -> this.remover(veterinario!!)
 
-            R.id.menu_formulario_editar -> helper!!.campoTrue(true)
+            R.id.menu_formulario_editar -> helper.campoTrue(true)
 
             R.id.menu_formulario_salvar -> {
 
-                val veterinario = helper!!.pegaVeterinario()
+                val veterinario = helper.pegaVeterinario()
 
                 if (veterinario.codigo != null) {
                     val editar = RetrofitInicializador().veterinarioService.editar(veterinario.codigo!!, veterinario)
@@ -111,9 +111,6 @@ class FormVeterinarioActivity : AppCompatActivity() {
                         }
                     })
                 }
-
-                Toast.makeText(this@FormVeterinarioActivity, "Veterinário Salvo!", Toast.LENGTH_SHORT).show()
-                finish()
             }
         }
 

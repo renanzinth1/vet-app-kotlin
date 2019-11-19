@@ -8,40 +8,38 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageButton
 import android.widget.Toast
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.AnimaisActivity
 import br.com.renanjardel.vet_app_kotlin.helper.FormularioClienteHelper
 import br.com.renanjardel.vet_app_kotlin.model.Cliente
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_form_cliente.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class FormClienteActivity : AppCompatActivity() {
 
-    private var helper: FormularioClienteHelper? = null
+    private val helper: FormularioClienteHelper by lazy{
+        FormularioClienteHelper(this)
+    }
 
-    private var btnListarAnimais: ImageButton? = null
     private var cliente: Cliente? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_cliente)
 
-        helper = FormularioClienteHelper(this)
-        btnListarAnimais = findViewById(R.id.listar_animais)
-
         val intent = intent
-        cliente = intent.getSerializableExtra("cliente") as Cliente
+        cliente = intent.getSerializableExtra("cliente") as? Cliente
 
         if (cliente != null)
-            helper!!.preencheFormulario(cliente)
+            helper.preencheFormulario(cliente)
         else
-            btnListarAnimais!!.visibility = View.GONE
+            listar_animais.visibility = View.GONE
 
-        btnListarAnimais!!.setOnClickListener {
+        listar_animais.setOnClickListener {
             val intent = Intent(this@FormClienteActivity, AnimaisActivity::class.java)
             intent.putExtra("cliente", cliente)
             startActivity(intent)
@@ -72,10 +70,10 @@ class FormClienteActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_formulario_remover -> this.remover(cliente!!)
 
-            R.id.menu_formulario_editar -> helper!!.campoTrue(true)
+            R.id.menu_formulario_editar -> helper.campoTrue(true)
 
             R.id.menu_formulario_salvar -> {
-                val cliente = helper!!.pegaCliente()
+                val cliente = helper.pegaCliente()
 
                 if (cliente!!.codigo != null) {
                     val editar = RetrofitInicializador().clienteService.editar(cliente.codigo!!, cliente)

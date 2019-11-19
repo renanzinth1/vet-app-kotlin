@@ -1,57 +1,34 @@
 package br.com.renanjardel.vet_app_kotlin.helper
 
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormClienteActivity
 import br.com.renanjardel.vet_app_kotlin.model.Cliente
 import br.com.renanjardel.vet_app_kotlin.model.Sexo
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_form_cliente.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FormularioClienteHelper(activity: FormClienteActivity) {
+class FormularioClienteHelper(private val activity: FormClienteActivity) {
 
-    private val campoNome: EditText
-    private val campoSobrenome: EditText
-    private val campoCpf: EditText
-    private val campoTelefone: EditText
-    private val campodataNascimento: EditText
-    private val sexos: RadioGroup
-    private val campoMasculino: RadioButton
-    private val campoFeminino: RadioButton
-
-    private var cliente: Cliente? = null
-
-    init {
-        campoNome = activity.findViewById(R.id.campo_cliente_nome)
-        campoSobrenome = activity.findViewById(R.id.campo_cliente_sobrenome)
-        campoCpf = activity.findViewById(R.id.campo_cliente_cpf)
-        campoTelefone = activity.findViewById(R.id.campo_cliente_telefone)
-        campodataNascimento = activity.findViewById(R.id.campo_cliente_dataNascimento)
-        sexos = activity.findViewById(R.id.radioGroup_sexos)
-        campoMasculino = activity.findViewById(R.id.campo_cliente_masculino)
-        campoFeminino = activity.findViewById(R.id.campo_cliente_feminino)
-        cliente = Cliente()
-    }
+    private var cliente = Cliente()
 
     fun pegaCliente(): Cliente? {
-        cliente!!.nome = campoNome.text.toString()
-        cliente!!.sobrenome = campoSobrenome.text.toString()
-        cliente!!.cpf = campoCpf.text.toString()
-        cliente!!.telefone = campoTelefone.text.toString()
+        cliente.nome = activity.campo_cliente_nome.text.toString()
+        cliente.sobrenome = activity.campo_cliente_sobrenome.text.toString()
+        cliente.cpf = activity.campo_cliente_cpf.text.toString()
+        cliente.telefone = activity.campo_cliente_telefone.text.toString()
 
-        cliente!!.dataNascimento = campodataNascimento.text.toString()
+        cliente.dataNascimento = activity.campo_cliente_dataNascimento.text.toString()
 
         //Pegando qual radiobutton foi selecinada
-        val selectecId = sexos.checkedRadioButtonId
+        val selectecId = activity.radioGroup_sexos.checkedRadioButtonId
 
         when (selectecId) {
-            R.id.campo_cliente_masculino -> cliente!!.sexo = Sexo.MASCULINO
+            R.id.campo_cliente_masculino -> cliente.sexo = Sexo.MASCULINO
 
-            R.id.campo_cliente_feminino -> cliente!!.sexo = Sexo.FEMININO
+            R.id.campo_cliente_feminino -> cliente.sexo = Sexo.FEMININO
         }
 
         return cliente
@@ -67,21 +44,21 @@ class FormularioClienteHelper(activity: FormClienteActivity) {
 
                 val cliente = response.body()
 
-                campoNome.setText(cliente!!.nome)
-                campoSobrenome.setText(cliente.sobrenome)
-                campoCpf.setText(cliente.cpf)
-                campoTelefone.setText(cliente.telefone)
-                campodataNascimento.setText(cliente.dataNascimento)
+                activity.campo_cliente_nome.setText(cliente!!.nome)
+                activity.campo_cliente_sobrenome.setText(cliente.sobrenome)
+                activity.campo_cliente_cpf.setText(cliente.cpf)
+                activity.campo_cliente_telefone.setText(cliente.telefone)
+                activity.campo_cliente_dataNascimento.setText(cliente.dataNascimento)
 
                 val sexo = cliente.sexo
 
                 if (sexo == Sexo.MASCULINO) {
-                    campoMasculino.isChecked = true
-                    campoFeminino.isChecked = false
+                    activity.campo_cliente_masculino.isChecked = true
+                    activity.campo_cliente_feminino.isChecked = false
 
                 } else {
-                    campoFeminino.isChecked = true
-                    campoMasculino.isChecked = false
+                    activity.campo_cliente_feminino.isChecked = true
+                    activity.campo_cliente_masculino.isChecked = false
                 }
 
                 this@FormularioClienteHelper.cliente = cliente
@@ -97,12 +74,12 @@ class FormularioClienteHelper(activity: FormClienteActivity) {
     }
 
     fun campoTrue(value: Boolean) {
-        campoNome.isEnabled = value
-        campoSobrenome.isEnabled = value
-        campoCpf.isEnabled = value
-        campoTelefone.isEnabled = value
-        campodataNascimento.isEnabled = value
-        campoMasculino.isEnabled = value
-        campoFeminino.isEnabled = value
+        activity.campo_cliente_nome.isEnabled = value
+        activity.campo_cliente_sobrenome.isEnabled = value
+        activity.campo_cliente_cpf.isEnabled = value
+        activity.campo_cliente_telefone.isEnabled = value
+        activity.campo_cliente_dataNascimento.isEnabled = value
+        activity.campo_cliente_masculino.isEnabled = value
+        activity.campo_cliente_feminino.isEnabled = value
     }
 }

@@ -7,18 +7,19 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.ContextMenu
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormEspecieActivity
 import br.com.renanjardel.vet_app_kotlin.model.Especie
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_especies.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class EspeciesActivity : AppCompatActivity() {
-
-    private var especiesView: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,28 +27,24 @@ class EspeciesActivity : AppCompatActivity() {
 
         carregaLista()
 
-        val botaoNovaEspecie = findViewById<Button>(R.id.nova_especie)
-
-        botaoNovaEspecie.setOnClickListener {
+        nova_especie.setOnClickListener {
             val goCadastrarEspecie = Intent(this@EspeciesActivity, FormEspecieActivity::class.java)
             startActivity(goCadastrarEspecie)
         }
 
-        especiesView = findViewById(R.id.lista_especie)
-
-        especiesView!!.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, id ->
+        lista_especie.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, id ->
             val especie = lista.getItemAtPosition(position) as Especie
             val formEspecie = Intent(this@EspeciesActivity, FormEspecieActivity::class.java)
             formEspecie.putExtra("especie", especie)
             startActivity(formEspecie)
         }
 
-        registerForContextMenu(especiesView)
+        registerForContextMenu(lista_especie)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val especie = especiesView!!.getItemAtPosition(info.position) as Especie
+        val especie = lista_especie.getItemAtPosition(info.position) as Especie
 
         val remover = menu.add("Remover")
         remover.setOnMenuItemClickListener {
@@ -96,7 +93,6 @@ class EspeciesActivity : AppCompatActivity() {
     }
 
     fun carregaLista() {
-        //final ListView especiesView = findViewById(R.id.lista_especies);
 
         val especies = RetrofitInicializador().especieService.listar()
 
@@ -105,8 +101,8 @@ class EspeciesActivity : AppCompatActivity() {
                 val especies = response.body()
 
                 //EspeciesAdapter adapter = new EspeciesAdapter(EspeciesActivity.this, especies);
-                val adapter = ArrayAdapter(this@EspeciesActivity, android.R.layout.simple_list_item_1, especies!!)
-                especiesView!!.adapter = adapter
+                val adapter = ArrayAdapter(this@EspeciesActivity, android.R.layout.simple_list_item_1, especies)
+                lista_especie.adapter = adapter
             }
 
             override fun onFailure(call: Call<List<Especie>>, t: Throwable) {

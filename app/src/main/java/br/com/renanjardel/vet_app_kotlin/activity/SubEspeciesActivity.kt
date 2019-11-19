@@ -7,20 +7,22 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.ContextMenu
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormSubEspecieActivity
 import br.com.renanjardel.vet_app_kotlin.model.Especie
 import br.com.renanjardel.vet_app_kotlin.model.SubEspecie
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_sub_especies.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SubEspeciesActivity : AppCompatActivity() {
 
-    private var subEspeciesView: ListView? = null
-    private var especie: Especie? = null
+    private var especie = Especie()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +33,7 @@ class SubEspeciesActivity : AppCompatActivity() {
 
         carregaLista()
 
-        val botaoNovaSubEspecie = findViewById<Button>(R.id.nova_subEspecie)
-
-        botaoNovaSubEspecie.setOnClickListener {
+        nova_subEspecie.setOnClickListener {
             val goCadastrarSubEspecie = Intent(this@SubEspeciesActivity, FormSubEspecieActivity::class.java)
 
             //Passando objeto de especie para depois setar no subEspecie
@@ -41,21 +41,19 @@ class SubEspeciesActivity : AppCompatActivity() {
             startActivity(goCadastrarSubEspecie)
         }
 
-        subEspeciesView = findViewById(R.id.lista_subEspecie)
-
-        subEspeciesView!!.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, id ->
+        lista_subEspecie.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, id ->
             val subEspecie = lista.getItemAtPosition(position) as SubEspecie
             val formEspecie = Intent(this@SubEspeciesActivity, FormSubEspecieActivity::class.java)
             formEspecie.putExtra("subEspecie", subEspecie)
             startActivity(formEspecie)
         }
 
-        registerForContextMenu(subEspeciesView)
+        registerForContextMenu(lista_subEspecie)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val subEspecie = subEspeciesView!!.getItemAtPosition(info.position) as SubEspecie
+        val subEspecie = lista_subEspecie.getItemAtPosition(info.position) as SubEspecie
 
         val remover = menu.add("Remover")
         remover.setOnMenuItemClickListener {
@@ -97,15 +95,15 @@ class SubEspeciesActivity : AppCompatActivity() {
 
     fun carregaLista() {
 
-        val subespecies = RetrofitInicializador().especieService.listarSubEspecies(especie!!.codigo)
+        val subespecies = RetrofitInicializador().especieService.listarSubEspecies(especie.codigo)
 
         subespecies.enqueue(object : Callback<List<SubEspecie>> {
             override fun onResponse(call: Call<List<SubEspecie>>, response: Response<List<SubEspecie>>) {
                 val subespecies = response.body()
 
                 //SubEspeciesAdapter adapter = new SubEspeciesAdapter(SubEspeciesActivity.this, subespecies);
-                val adapter = ArrayAdapter(this@SubEspeciesActivity, android.R.layout.simple_list_item_1, subespecies!!)
-                subEspeciesView!!.adapter = adapter
+                val adapter = ArrayAdapter(this@SubEspeciesActivity, android.R.layout.simple_list_item_1, subespecies)
+                lista_subEspecie.adapter = adapter
             }
 
             override fun onFailure(call: Call<List<SubEspecie>>, t: Throwable) {

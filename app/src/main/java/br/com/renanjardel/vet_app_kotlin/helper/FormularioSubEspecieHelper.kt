@@ -1,28 +1,22 @@
 package br.com.renanjardel.vet_app_kotlin.helper
 
-import android.widget.EditText
-import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormSubEspecieActivity
 import br.com.renanjardel.vet_app_kotlin.model.SubEspecie
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_form_sub_especie.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FormularioSubEspecieHelper(activity: FormSubEspecieActivity) {
+class FormularioSubEspecieHelper(private val activity: FormSubEspecieActivity) {
 
-    private val campoNome: EditText
-    private var subEspecie: SubEspecie? = null
+    private var subEspecie = SubEspecie()
 
-    init {
-        campoNome = activity.findViewById(R.id.campo_subEspecie_nome)
-        subEspecie = SubEspecie()
-    }
 
     fun pegaSubEspecie(): SubEspecie {
-        subEspecie!!.nome = campoNome.text.toString()
+        subEspecie.nome = activity.campo_subEspecie_nome.text.toString()
 
-        return subEspecie!!
+        return subEspecie
     }
 
     fun preencheFormulario(subEspecie: SubEspecie?) {
@@ -35,7 +29,7 @@ class FormularioSubEspecieHelper(activity: FormSubEspecieActivity) {
 
                 val subEspecie = response.body()
 
-                campoNome.setText(subEspecie!!.nome)
+                activity.campo_subEspecie_nome.setText(subEspecie!!.nome)
 
                 this@FormularioSubEspecieHelper.subEspecie = subEspecie
 
@@ -50,6 +44,6 @@ class FormularioSubEspecieHelper(activity: FormSubEspecieActivity) {
     }
 
     fun campoTrue(value: Boolean) {
-        campoNome.isEnabled = value
+        activity.campo_subEspecie_nome.isEnabled = value
     }
 }

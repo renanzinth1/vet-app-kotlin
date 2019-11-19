@@ -8,40 +8,39 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageButton
 import android.widget.Toast
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.SubEspeciesActivity
 import br.com.renanjardel.vet_app_kotlin.helper.FormularioEspecieHelper
 import br.com.renanjardel.vet_app_kotlin.model.Especie
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_form_especie.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class FormEspecieActivity : AppCompatActivity() {
 
-    private var helper: FormularioEspecieHelper? = null
+    private val helper: FormularioEspecieHelper by lazy{
+        FormularioEspecieHelper(this)
+    }
 
-    private var btnListarSubEspecies: ImageButton? = null
     private var especie: Especie? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_especie)
 
-        helper = FormularioEspecieHelper(this)
-        btnListarSubEspecies = findViewById(R.id.listar_subEspecie)
-
         val intent = intent
-        especie = intent.getSerializableExtra("especie") as Especie
+        especie = intent.getSerializableExtra("especie") as? Especie
 
         if (especie != null)
-            helper!!.preencheFormulario(especie)
-        else
-            btnListarSubEspecies!!.visibility = View.GONE
+            helper.preencheFormulario(especie)
+        else {
+            listar_subEspecie.visibility = View.GONE
+        }
 
-        btnListarSubEspecies!!.setOnClickListener {
+        listar_subEspecie.setOnClickListener {
             val intent = Intent(this@FormEspecieActivity, SubEspeciesActivity::class.java)
             intent.putExtra("especie", especie)
             startActivity(intent)
@@ -71,13 +70,13 @@ class FormEspecieActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_formulario_remover -> this.remover(especie)
 
-            R.id.menu_formulario_editar -> helper!!.campoTrue(true)
+            R.id.menu_formulario_editar -> helper.campoTrue(true)
 
             R.id.menu_formulario_salvar -> {
-                val especie = helper!!.pegaEspecie()
+                val especie = helper.pegaEspecie()
 
                 if (especie?.codigo != null) {
-                    val editar = RetrofitInicializador().especieService.editar(especie?.codigo!!, especie)
+                    val editar = RetrofitInicializador().especieService.editar(especie.codigo!!, especie)
                     editar.enqueue(object : Callback<Especie> {
                         override fun onResponse(call: Call<Especie>, response: Response<Especie>) {
                             val resposta = response.code()

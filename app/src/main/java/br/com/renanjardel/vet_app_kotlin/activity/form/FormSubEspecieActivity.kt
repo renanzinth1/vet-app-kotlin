@@ -18,7 +18,9 @@ import retrofit2.Response
 
 class FormSubEspecieActivity : AppCompatActivity() {
 
-    private var helper: FormularioSubEspecieHelper? = null
+    private val helper: FormularioSubEspecieHelper by lazy{
+        FormularioSubEspecieHelper(this)
+    }
     private var especie: Especie? = null
     private var subEspecie: SubEspecie? = null
 
@@ -26,14 +28,12 @@ class FormSubEspecieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_sub_especie)
 
-        helper = FormularioSubEspecieHelper(this)
-
         val intent = intent
-        subEspecie = intent.getSerializableExtra("subEspecie") as SubEspecie
-        especie = intent.getSerializableExtra("especie") as Especie
+        subEspecie = intent.getSerializableExtra("subEspecie") as? SubEspecie
+        especie = intent.getSerializableExtra("especie") as? Especie
 
         if (subEspecie != null)
-            helper!!.preencheFormulario(subEspecie)
+            helper.preencheFormulario(subEspecie)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
@@ -51,10 +51,10 @@ class FormSubEspecieActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_formulario_remover -> this.remover(subEspecie)
 
-            R.id.menu_formulario_editar -> helper!!.campoTrue(true)
+            R.id.menu_formulario_editar -> helper.campoTrue(true)
 
             R.id.menu_formulario_salvar -> {
-                val subEspecie = helper!!.pegaSubEspecie()
+                val subEspecie = helper.pegaSubEspecie()
 
                 if (subEspecie.codigo != null) {
 
@@ -82,7 +82,7 @@ class FormSubEspecieActivity : AppCompatActivity() {
                 } else {
 
                     //Setando a especie recuperada em um objeto com o nome subEspecie do tipo SubEspecie
-                    subEspecie.especie = especie
+                    subEspecie.especie = especie!!
                     val call = RetrofitInicializador().subEspecieService.salvar(subEspecie)
 
                     call.enqueue(object : Callback<Void> {

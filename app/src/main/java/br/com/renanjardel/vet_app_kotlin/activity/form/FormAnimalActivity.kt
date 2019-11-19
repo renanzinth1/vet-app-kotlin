@@ -21,25 +21,25 @@ class FormAnimalActivity : AppCompatActivity() {
     private var cliente: Cliente? = null
     private var animal: Animal? = null
 
-    private var helper: FormularioAnimalHelper? = null
+    private val helper: FormularioAnimalHelper by lazy{
+        FormularioAnimalHelper(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_animal)
 
-        helper = FormularioAnimalHelper(this)
         val intent = intent
 
-        helper!!.carregaSpinnerEspecieESubEspecie()
+        helper.carregaSpinnerEspecieESubEspecie()
 
         //Pegando o objeto cliente do formulário
-        cliente = intent.getSerializableExtra("cliente") as Cliente
+        cliente = intent.getSerializableExtra("cliente") as? Cliente
         //Pegando o objeto animal da lista de animais ao selecionar
-        animal = intent.getSerializableExtra("animal") as Animal
+        animal = intent.getSerializableExtra("animal") as? Animal
 
         if (animal != null)
-            helper!!.preencherFomulario(animal)
-
+            helper.preencherFomulario(animal)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
@@ -58,10 +58,10 @@ class FormAnimalActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_formulario_remover -> this.remover(animal)
 
-            R.id.menu_formulario_editar -> helper!!.campoTrue(true)
+            R.id.menu_formulario_editar -> helper.campoTrue(true)
 
             R.id.menu_formulario_salvar -> {
-                animal = helper!!.pegaAnimal()
+                animal = helper.pegaAnimal()
 
                 if (animal!!.codigo != null) {
 
@@ -88,7 +88,7 @@ class FormAnimalActivity : AppCompatActivity() {
 
                 } else {
 
-                    animal!!.cliente = cliente
+                    animal!!.cliente = this.cliente!!
                     val salvarCall = RetrofitInicializador().animalService.salvar(animal)
 
                     salvarCall.enqueue(object : Callback<Void> {
@@ -123,7 +123,7 @@ class FormAnimalActivity : AppCompatActivity() {
                 .setTitle("Excluir")
                 .setIcon(R.drawable.ic_error_icon)
                 .setMessage("Deseja excluir o Animal " + animal!!.nome + "?")
-                .setPositiveButton("Sim") { dialog, which ->
+                .setPositiveButton("Sim") { _, _ ->
                     val removerAnimal = RetrofitInicializador().animalService.remover(animal.codigo)
                     removerAnimal.enqueue(object : Callback<Void> {
                         override fun onResponse(call: Call<Void>, response: Response<Void>) {

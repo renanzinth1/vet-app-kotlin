@@ -9,6 +9,7 @@ import android.widget.TextView
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.extension.formataCpf
 import br.com.renanjardel.vet_app_kotlin.model.Cliente
+import kotlinx.android.synthetic.main.cliente_list_item.view.*
 
 class ClientesAdapter(private val context: Context, private val listaClientes: List<Cliente>) : BaseAdapter() {
 
@@ -36,7 +37,7 @@ class ClientesAdapter(private val context: Context, private val listaClientes: L
 
         val campoNome = view!!.findViewById<TextView>(R.id.cliente_item_nome)
         val campoSobrenome = view.findViewById<TextView>(R.id.cliente_item_sobrenome)
-        val campoCpf = view.findViewById<TextView>(R.id.cliente_item_cpf)
+        val campoCpf = view.cliente_item_cpf
 
         //if (campoNome != null)
         campoNome.text = cliente.nome
@@ -45,7 +46,7 @@ class ClientesAdapter(private val context: Context, private val listaClientes: L
         campoSobrenome.text = cliente.sobrenome
 
         //if (campoCpf != null)
-        campoCpf.text = cliente.cpf?.formataCpf()
+        campoCpf.text = cliente.cpf.formataCpf()
 
         return view
     }

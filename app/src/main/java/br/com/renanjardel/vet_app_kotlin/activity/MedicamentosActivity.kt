@@ -7,18 +7,20 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.ContextMenu
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.Toast
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormMedicamentoActivity
 import br.com.renanjardel.vet_app_kotlin.model.Medicamento
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_medicamentos.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MedicamentosActivity : AppCompatActivity() {
-
-    private var medicamentosView: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,21 +35,19 @@ class MedicamentosActivity : AppCompatActivity() {
             startActivity(goCadastrarMedicamento)
         }
 
-        medicamentosView = findViewById(R.id.lista_medicamento)
-
-        medicamentosView!!.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, id ->
+        lista_medicamento.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, id ->
             val medicamento = lista.getItemAtPosition(position) as Medicamento
             val formMedicamento = Intent(this@MedicamentosActivity, FormMedicamentoActivity::class.java)
             formMedicamento.putExtra("medicamento", medicamento)
             startActivity(formMedicamento)
         }
 
-        registerForContextMenu(medicamentosView)
+        registerForContextMenu(lista_medicamento)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val medicamento = medicamentosView!!.getItemAtPosition(info.position) as Medicamento
+        val medicamento = lista_medicamento.getItemAtPosition(info.position) as Medicamento
 
         val remover = menu.add("Remover")
         remover.setOnMenuItemClickListener {
@@ -98,8 +98,8 @@ class MedicamentosActivity : AppCompatActivity() {
                 val medicamentos = response.body()
 
                 //ClientesAdapter adapter = new ClientesAdapter(ClientesActivity.this, clientes);
-                val adapter = ArrayAdapter(this@MedicamentosActivity, android.R.layout.simple_list_item_1, medicamentos!!)
-                medicamentosView!!.adapter = adapter
+                val adapter = ArrayAdapter(this@MedicamentosActivity, android.R.layout.simple_list_item_1, medicamentos)
+                lista_medicamento.adapter = adapter
             }
 
             override fun onFailure(call: Call<List<Medicamento>>, t: Throwable) {

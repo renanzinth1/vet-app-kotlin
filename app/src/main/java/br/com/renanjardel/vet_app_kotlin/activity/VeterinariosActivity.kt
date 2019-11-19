@@ -9,20 +9,18 @@ import android.view.ContextMenu
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Button
-import android.widget.ListView
 import android.widget.Toast
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormVeterinarioActivity
 import br.com.renanjardel.vet_app_kotlin.adapter.VeterinariosAdapter
 import br.com.renanjardel.vet_app_kotlin.model.Veterinario
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_veterinarios.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class VeterinariosActivity : AppCompatActivity() {
-
-    private var veterinariosView: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,21 +33,19 @@ class VeterinariosActivity : AppCompatActivity() {
             startActivity(goCadastrarVeterinario)
         }
 
-        veterinariosView = findViewById(R.id.lista_veterinario)
-
-        veterinariosView!!.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, l ->
+        lista_veterinario.onItemClickListener = AdapterView.OnItemClickListener { lista, view, position, l ->
             val veterinario = lista.getItemAtPosition(position) as Veterinario
             val intent = Intent(this@VeterinariosActivity, FormVeterinarioActivity::class.java)
             intent.putExtra("veterinario", veterinario)
             startActivity(intent)
         }
 
-        registerForContextMenu(veterinariosView)
+        registerForContextMenu(lista_veterinario)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val veterinario = veterinariosView!!.getItemAtPosition(info.position) as Veterinario
+        val veterinario = lista_veterinario.getItemAtPosition(info.position) as Veterinario
 
         val remover = menu.add("Remover")
         remover.setOnMenuItemClickListener {
@@ -100,7 +96,7 @@ class VeterinariosActivity : AppCompatActivity() {
 
                 val adapter = VeterinariosAdapter(this@VeterinariosActivity, veterinarios!!)
                 //ArrayAdapter<Veterinario> adapter = new ArrayAdapter<Veterinario> (VeterinariosActivity.this, android.R.layout.simple_list_item_1, Veterinarios);
-                veterinariosView!!.adapter = adapter
+                lista_veterinario.adapter = adapter
             }
 
             override fun onFailure(call: Call<List<Veterinario>>, t: Throwable) {

@@ -1,7 +1,8 @@
 package br.com.renanjardel.vet_app_kotlin.helper
 
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormAnimalActivity
 import br.com.renanjardel.vet_app_kotlin.model.Animal
@@ -9,61 +10,41 @@ import br.com.renanjardel.vet_app_kotlin.model.Especie
 import br.com.renanjardel.vet_app_kotlin.model.SexoAnimal
 import br.com.renanjardel.vet_app_kotlin.model.SubEspecie
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_form_animal.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class FormularioAnimalHelper(private val activity: FormAnimalActivity) {
 
-    private val campoNome: EditText
-    private val campoDataNascimento: EditText
-    private val sexos: RadioGroup
-    private val campoMacho: RadioButton
-    private val campoFemea: RadioButton
-    private val spinnerEspecie: Spinner
-    private val spinnerSubEspecie: Spinner
-
-    private var especies: List<Especie>? = null
-    private var subespecies: List<SubEspecie>? = null
-    private var animal: Animal? = null
-
-    init {
-        campoNome = activity.findViewById(R.id.campo_animal_nome)
-        campoDataNascimento = activity.findViewById(R.id.campo_animal_dataNascimento)
-        sexos = activity.findViewById(R.id.radioGroup_sexos)
-        campoMacho = activity.findViewById(R.id.campo_animal_macho)
-        campoFemea = activity.findViewById(R.id.campo_animal_femea)
-        spinnerEspecie = activity.findViewById(R.id.spinner_especies)
-        spinnerSubEspecie = activity.findViewById(R.id.spinner_subEspecies)
-
-        animal = Animal()
-    }
-
+    private lateinit var especies: List<Especie>
+    private lateinit var subespecies: List<SubEspecie>
+    private var animal = Animal()
 
     fun pegaAnimal(): Animal? {
-        animal!!.nome = campoNome.text.toString()
-        animal!!.dataNascimento = campoDataNascimento.text.toString()
+        animal.nome = activity.campo_animal_nome.text.toString()
+        animal.dataNascimento = activity.campo_animal_dataNascimento.text.toString()
 
-        val checkedRadioButtonId = sexos.checkedRadioButtonId
+        val checkedRadioButtonId = activity.radioGroup_sexos.checkedRadioButtonId
 
         when (checkedRadioButtonId) {
-            R.id.campo_animal_macho -> animal!!.sexo = SexoAnimal.MACHO
+            R.id.campo_animal_macho -> animal.sexo = SexoAnimal.MACHO
 
-            R.id.campo_animal_femea -> animal!!.sexo = SexoAnimal.FEMEA
+            R.id.campo_animal_femea -> animal.sexo = SexoAnimal.FEMEA
         }
 
-        animal!!.subEspecie = spinnerSubEspecie.selectedItem as SubEspecie
+        animal.subEspecie = activity.spinner_subEspecies.selectedItem as SubEspecie
 
         return animal
     }
 
     fun campoTrue(value: Boolean) {
-        campoNome.isEnabled = value
-        campoDataNascimento.isEnabled = value
-        campoMacho.isEnabled = value
-        campoFemea.isEnabled = value
-        spinnerEspecie.isEnabled = value
-        spinnerSubEspecie.isEnabled = value
+        activity.campo_animal_nome.isEnabled = value
+        activity.campo_animal_dataNascimento.isEnabled = value
+        activity.campo_animal_macho.isEnabled = value
+        activity.campo_animal_femea.isEnabled = value
+        activity.spinner_especies.isEnabled = value
+        activity.spinner_subEspecies.isEnabled = value
     }
 
     fun carregaSpinnerEspecieESubEspecie() {
@@ -73,12 +54,12 @@ class FormularioAnimalHelper(private val activity: FormAnimalActivity) {
         especieCall.enqueue(object : Callback<List<Especie>> {
             override fun onResponse(call: Call<List<Especie>>, response: Response<List<Especie>>) {
 
-                this@FormularioAnimalHelper.especies = response.body()
+                this@FormularioAnimalHelper.especies = response.body()!!
 
-                val adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, especies!!)
-                spinnerEspecie.adapter = adapter
+                val adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, especies)
+                activity.spinner_especies.adapter = adapter
 
-                spinnerEspecie.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                activity.spinner_especies.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
                         val especie = parent.getItemAtPosition(position) as Especie
@@ -88,13 +69,13 @@ class FormularioAnimalHelper(private val activity: FormAnimalActivity) {
                         subEspecieCall.enqueue(object : Callback<List<SubEspecie>> {
                             override fun onResponse(call: Call<List<SubEspecie>>, response: Response<List<SubEspecie>>) {
 
-                                this@FormularioAnimalHelper.subespecies = response.body()
+                                this@FormularioAnimalHelper.subespecies = response.body()!!
 
-                                val adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, subespecies!!)
-                                spinnerSubEspecie.adapter = adapter
+                                val adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, subespecies)
+                                activity.spinner_subEspecies.adapter = adapter
 
-                                if (animal!!.codigo != null) {
-                                    spinnerSubEspecie.setSelection(pegarPosicaoSubEspecie(animal!!.subEspecie))
+                                if (animal.codigo != null) {
+                                    activity.spinner_subEspecies.setSelection(pegarPosicaoSubEspecie(animal.subEspecie))
                                 }
 
                             }
@@ -120,8 +101,8 @@ class FormularioAnimalHelper(private val activity: FormAnimalActivity) {
     fun pegarPosicaoEspecie(especie: Especie?): Int {
 
         var i = 0
-        while (i <= especies!!.size - 1) {
-            if (especies!![i] == especie) {
+        while (i <= especies.size - 1) {
+            if (especies[i] == especie) {
                 return i
             }
             i++
@@ -132,8 +113,8 @@ class FormularioAnimalHelper(private val activity: FormAnimalActivity) {
     fun pegarPosicaoSubEspecie(subEspecie: SubEspecie?): Int {
 
         var i = 0
-        while (i <= subespecies!!.size - 1) {
-            if (subespecies!![i] == subEspecie) {
+        while (i <= subespecies.size - 1) {
+            if (subespecies[i] == subEspecie) {
                 return i
             }
             i++
@@ -151,23 +132,23 @@ class FormularioAnimalHelper(private val activity: FormAnimalActivity) {
 
                 val animal = response.body()
 
-                campoNome.setText(animal!!.nome)
-                campoDataNascimento.setText(animal.dataNascimento)
+                activity.campo_animal_nome.setText(animal!!.nome)
+                activity.campo_animal_dataNascimento.setText(animal.dataNascimento)
 
                 val sexo = animal.sexo
 
                 if (sexo == SexoAnimal.MACHO) {
-                    campoMacho.isChecked = true
-                    campoFemea.isChecked = false
+                    activity.campo_animal_macho.isChecked = true
+                    activity.campo_animal_femea.isChecked = false
                 } else {
-                    campoFemea.isChecked = true
-                    campoMacho.isChecked = false
+                    activity.campo_animal_femea.isChecked = true
+                    activity.campo_animal_macho.isChecked = false
                 }
 
-                spinnerEspecie.setSelection(pegarPosicaoEspecie(animal.subEspecie!!.especie))
+                activity.spinner_especies.setSelection(pegarPosicaoEspecie(animal.subEspecie.especie))
 
                 //Aqui estava dando bug, então mudei para dentro do carregaSpinnerEspecieESubEspecie()
-                //spinnerSubEspecie.setSelection(pegarPosicaoSubEspecie(animal.getSubEspecie()));
+                //activity.spinner_subEspecies.setSelection(pegarPosicaoSubEspecie(animal.getSubEspecie()));
 
                 this@FormularioAnimalHelper.animal = animal
 

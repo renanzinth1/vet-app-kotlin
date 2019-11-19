@@ -1,60 +1,38 @@
 package br.com.renanjardel.vet_app_kotlin.helper
 
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormVeterinarioActivity
 import br.com.renanjardel.vet_app_kotlin.model.Sexo
 import br.com.renanjardel.vet_app_kotlin.model.Veterinario
 import br.com.renanjardel.vet_app_kotlin.retrofit.RetrofitInicializador
+import kotlinx.android.synthetic.main.activity_form_veterinario.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FormularioVeterinarioHelper(activity: FormVeterinarioActivity) {
+class FormularioVeterinarioHelper(private val activity: FormVeterinarioActivity) {
 
-    private val campoNome: EditText
-    private val campoSobrenome: EditText
-    private val campoCfmv: EditText
-    private val campoTelefone: EditText
-    private val campodataNascimento: EditText
-    private val sexos: RadioGroup
-    private val campoMasculino: RadioButton
-    private val campoFeminino: RadioButton
-    private var veterinario: Veterinario? = null
-
-    init {
-        campoNome = activity.findViewById(R.id.campo_veterinario_nome)
-        campoSobrenome = activity.findViewById(R.id.campo_veterinario_sobrenome)
-        campoCfmv = activity.findViewById(R.id.campo_veterinario_cfmv)
-        campoTelefone = activity.findViewById(R.id.campo_veterinario_telefone)
-        campodataNascimento = activity.findViewById(R.id.campo_veterinario_dataNascimento)
-        sexos = activity.findViewById(R.id.radioGroup_sexos)
-        campoMasculino = activity.findViewById(R.id.campo_veterinario_masculino)
-        campoFeminino = activity.findViewById(R.id.campo_veterinario_feminino)
-        veterinario = Veterinario()
-    }
+    private var veterinario = Veterinario()
 
     fun pegaVeterinario(): Veterinario {
 
-        veterinario!!.nome = campoNome.text.toString()
-        veterinario!!.sobrenome = campoSobrenome.text.toString()
-        veterinario!!.cfmv = campoCfmv.text.toString()
-        veterinario!!.telefone = campoTelefone.text.toString()
+        veterinario.nome = activity.campo_veterinario_nome.text.toString()
+        veterinario.sobrenome = activity.campo_veterinario_sobrenome.text.toString()
+        veterinario.cfmv = activity.campo_veterinario_cfmv.text.toString()
+        veterinario.telefone = activity.campo_veterinario_telefone.text.toString()
 
-        veterinario!!.dataNascimento = campodataNascimento.text.toString()
+        veterinario.dataNascimento = activity.campo_veterinario_dataNascimento.text.toString()
 
         //Pegando qual radiobutton foi selecinada
-        val selectecId = sexos.checkedRadioButtonId
+        val selectecId = activity.radioGroup_sexos.checkedRadioButtonId
 
         when (selectecId) {
-            R.id.campo_veterinario_masculino -> veterinario!!.sexo = Sexo.MASCULINO
+            R.id.campo_veterinario_masculino -> veterinario.sexo = Sexo.MASCULINO
 
-            R.id.campo_veterinario_feminino -> veterinario!!.sexo = Sexo.FEMININO
+            R.id.campo_veterinario_feminino -> veterinario.sexo = Sexo.FEMININO
         }
 
-        return veterinario!!
+        return veterinario
     }
 
     fun preencheFormulario(veterinario: Veterinario?) {
@@ -67,21 +45,21 @@ class FormularioVeterinarioHelper(activity: FormVeterinarioActivity) {
 
                 val veterinario = response.body()
 
-                campoNome.setText(veterinario!!.nome)
-                campoSobrenome.setText(veterinario.sobrenome)
-                campoCfmv.setText(veterinario.cfmv)
-                campoTelefone.setText(veterinario.telefone)
-                campodataNascimento.setText(veterinario.dataNascimento)
+                activity.campo_veterinario_nome.setText(veterinario!!.nome)
+                activity.campo_veterinario_sobrenome.setText(veterinario.sobrenome)
+                activity.campo_veterinario_cfmv.setText(veterinario.cfmv)
+                activity.campo_veterinario_telefone.setText(veterinario.telefone)
+                activity.campo_veterinario_dataNascimento.setText(veterinario.dataNascimento)
 
                 val sexo = veterinario.sexo
 
                 if (sexo == Sexo.MASCULINO) {
-                    campoMasculino.isChecked = true
-                    campoFeminino.isChecked = false
+                    activity.campo_veterinario_masculino.isChecked = true
+                    activity.campo_veterinario_feminino.isChecked = false
 
                 } else {
-                    campoFeminino.isChecked = true
-                    campoMasculino.isChecked = false
+                    activity.campo_veterinario_feminino.isChecked = true
+                    activity.campo_veterinario_masculino.isChecked = false
                 }
 
                 this@FormularioVeterinarioHelper.veterinario = veterinario
@@ -96,13 +74,13 @@ class FormularioVeterinarioHelper(activity: FormVeterinarioActivity) {
     }
 
     fun campoTrue(value: Boolean) {
-        campoNome.isEnabled = value
-        campoSobrenome.isEnabled = value
-        campoCfmv.isEnabled = value
-        campoTelefone.isEnabled = value
-        campodataNascimento.isEnabled = value
-        campoMasculino.isEnabled = value
-        campoFeminino.isEnabled = value
+        activity.campo_veterinario_nome.isEnabled = value
+        activity.campo_veterinario_sobrenome.isEnabled = value
+        activity.campo_veterinario_cfmv.isEnabled = value
+        activity.campo_veterinario_telefone.isEnabled = value
+        activity.campo_veterinario_dataNascimento.isEnabled = value
+        activity.campo_veterinario_masculino.isEnabled = value
+        activity.campo_veterinario_feminino.isEnabled = value
     }
 
 }

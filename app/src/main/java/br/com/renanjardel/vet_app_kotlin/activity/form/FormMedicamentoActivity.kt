@@ -17,20 +17,20 @@ import retrofit2.Response
 
 class FormMedicamentoActivity : AppCompatActivity() {
 
-    private var helper: FormularioMedicamentoHelper? = null
+    private val helper: FormularioMedicamentoHelper by lazy{
+        FormularioMedicamentoHelper(this)
+    }
     private var medicamento: Medicamento? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_medicamento)
 
-        helper = FormularioMedicamentoHelper(this)
-
         val intent = intent
-        medicamento = intent.getSerializableExtra("medicamento") as Medicamento
+        medicamento = intent.getSerializableExtra("medicamento") as? Medicamento
 
         if (medicamento != null)
-            helper!!.preencherFormulario(medicamento)
+            helper.preencherFormulario(medicamento)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
@@ -49,10 +49,10 @@ class FormMedicamentoActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_formulario_remover -> this.remover(medicamento!!)
 
-            R.id.menu_formulario_editar -> helper!!.campoTrue(true)
+            R.id.menu_formulario_editar -> helper.campoTrue(true)
 
             R.id.menu_formulario_salvar -> {
-                val medicamento = helper!!.pegaMedicamento()
+                val medicamento = helper.pegaMedicamento()
 
                 if (medicamento.codigo != null) {
                     val editar = RetrofitInicializador().medicamentoService.editar(medicamento.codigo!!, medicamento)
