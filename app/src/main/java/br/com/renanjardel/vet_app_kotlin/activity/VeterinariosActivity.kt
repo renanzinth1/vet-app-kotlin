@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.ContextMenu
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Button
 import android.widget.Toast
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormVeterinarioActivity
@@ -26,9 +25,7 @@ class VeterinariosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_veterinarios)
 
-        val botaoNovoVeterinario = findViewById<Button>(R.id.novo_veterinario)
-
-        botaoNovoVeterinario.setOnClickListener {
+        novo_veterinario.setOnClickListener {
             val goCadastrarVeterinario = Intent(this@VeterinariosActivity, FormVeterinarioActivity::class.java)
             startActivity(goCadastrarVeterinario)
         }

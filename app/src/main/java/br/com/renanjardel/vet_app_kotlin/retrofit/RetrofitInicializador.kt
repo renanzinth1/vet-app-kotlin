@@ -6,7 +6,10 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 
 class RetrofitInicializador {
 
-    private val retrofit: Retrofit
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder().baseUrl("http:/192.168.31.180:8080")
+            .addConverterFactory(JacksonConverterFactory.create()).build()
+    }
 
     val clienteService: ClienteService get() = retrofit.create(ClienteService::class.java)
 
@@ -19,9 +22,4 @@ class RetrofitInicializador {
     val subEspecieService: SubEspecieService get() = retrofit.create(SubEspecieService::class.java)
 
     val animalService: AnimalService get() = retrofit.create(AnimalService::class.java)
-
-    init {
-        retrofit = Retrofit.Builder().baseUrl("http:/192.168.31.180:8080")
-                .addConverterFactory(JacksonConverterFactory.create()).build()
-    }
 }

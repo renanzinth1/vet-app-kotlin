@@ -9,7 +9,6 @@ import android.view.ContextMenu
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.Toast
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.activity.form.FormMedicamentoActivity
@@ -28,9 +27,7 @@ class MedicamentosActivity : AppCompatActivity() {
 
         carregaLista()
 
-        val botaoNovoMedicamento = findViewById<Button>(R.id.novo_medicamento)
-
-        botaoNovoMedicamento.setOnClickListener {
+        novo_medicamento.setOnClickListener {
             val goCadastrarMedicamento = Intent(this@MedicamentosActivity, FormMedicamentoActivity::class.java)
             startActivity(goCadastrarMedicamento)
         }
