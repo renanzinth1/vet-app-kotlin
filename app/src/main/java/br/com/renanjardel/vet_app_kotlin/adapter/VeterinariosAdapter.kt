@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.TextView
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.model.Veterinario
+import kotlinx.android.synthetic.main.veterinario_list_item.view.*
 
 class VeterinariosAdapter(private val context: Context, private val listaVeterinarios: List<Veterinario>) : BaseAdapter() {
 
@@ -33,9 +33,9 @@ class VeterinariosAdapter(private val context: Context, private val listaVeterin
             view = inflater.inflate(R.layout.veterinario_list_item, parent, false)
         }
 
-        val campoNome = view!!.findViewById<TextView>(R.id.veterinario_item_nome)
-        val campoSobrenome = view.findViewById<TextView>(R.id.veterinario_item_sobrenome)
-        val campoCfmv = view.findViewById<TextView>(R.id.veterinario_item_cfmv)
+        val campoNome = view!!.veterinario_item_nome
+        val campoSobrenome = view.veterinario_item_sobrenome
+        val campoCfmv = view.veterinario_item_cfmv
 
         //if (campoNome != null)
         campoNome.text = veterinario.nome

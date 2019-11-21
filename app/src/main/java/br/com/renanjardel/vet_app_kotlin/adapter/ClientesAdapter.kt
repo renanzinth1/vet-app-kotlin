@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.TextView
 import br.com.renanjardel.vet_app_kotlin.R
 import br.com.renanjardel.vet_app_kotlin.extension.formataCpf
 import br.com.renanjardel.vet_app_kotlin.model.Cliente
@@ -35,8 +34,8 @@ class ClientesAdapter(private val context: Context, private val listaClientes: L
             view = inflater.inflate(R.layout.cliente_list_item, parent, false)
         }
 
-        val campoNome = view!!.findViewById<TextView>(R.id.cliente_item_nome)
-        val campoSobrenome = view.findViewById<TextView>(R.id.cliente_item_sobrenome)
+        val campoNome = view!!.cliente_item_nome
+        val campoSobrenome = view.cliente_item_sobrenome
         val campoCpf = view.cliente_item_cpf
 
         //if (campoNome != null)
